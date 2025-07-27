@@ -14,14 +14,13 @@ import it.emanuelebondattidev.WebfluxLearning.utils.Safe;
 //alternatively is possible to specify one or more conditions based on spring.profiles. This one disables for prod or production
 @Profile("!prod & !production") 
 public class H2ConsoleConfiguration {
-
+	
 	private Server webServer;
 	
 	@EventListener( ApplicationStartedEvent.class )
 	public void start() {
 		
 		final String WEB_PORT = "8095";
-		
 		Safe.invoke( 
 				() -> { 
 					this.webServer = Server.createWebServer( "-webPort", WEB_PORT ).start();

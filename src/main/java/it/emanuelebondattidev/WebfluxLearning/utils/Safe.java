@@ -1,7 +1,6 @@
 package it.emanuelebondattidev.WebfluxLearning.utils;
 
 import it.emanuelebondattidev.WebfluxLearning.utils.functional.UnsafeSupplier;
-import lombok.extern.slf4j.Slf4j;
 
 //@Slf4j
 public class Safe {
@@ -12,7 +11,7 @@ public class Safe {
             return supplier.get();
         } catch (Exception e) {
 //            log.error( "Error during .invoke" );
-        	System.out.println( "Error during .invoke" );
+        	System.out.println( "Error during .invoke -> %s".formatted( e.getMessage() ) );
             return null;
         }
     }
