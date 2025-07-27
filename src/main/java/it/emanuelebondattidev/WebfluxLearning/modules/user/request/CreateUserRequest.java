@@ -1,4 +1,4 @@
-package it.emanuelebondattidev.WebfluxLearning.controller.user.request;
+package it.emanuelebondattidev.WebfluxLearning.modules.user.request;
 
 import java.io.Serializable;
 

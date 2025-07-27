@@ -1,4 +1,4 @@
-package it.emanuelebondattidev.WebfluxLearning.model;
+package it.emanuelebondattidev.WebfluxLearning.modules.user;
 
 import java.io.Serializable;
 import java.util.UUID;
