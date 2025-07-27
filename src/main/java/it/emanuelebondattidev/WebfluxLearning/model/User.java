@@ -1,9 +1,12 @@
 package it.emanuelebondattidev.WebfluxLearning.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
@@ -18,4 +21,6 @@ public class User implements Serializable{
 	
 	private String firstName;
 	private String lastName;
+	private String email;
+	private UUID id;
 }
