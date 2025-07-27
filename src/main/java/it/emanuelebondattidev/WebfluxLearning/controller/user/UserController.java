@@ -1,5 +1,6 @@
 package it.emanuelebondattidev.WebfluxLearning.controller.user;
 
+import java.net.URI;
 import java.util.Arrays;
 
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class UserController {
 	}
 	
 	@PostMapping
-	@ResponseStatus(code = HttpStatus.CREATED)
+//	@ResponseStatus(code = HttpStatus.CREATED)
 	public Mono<ResponseEntity<User>> createUser( @Valid @RequestBody Mono<CreateUserRequest> request ) {
 		System.out.println("createUser");
 		
@@ -56,7 +57,12 @@ public class UserController {
 			//is badRequest the right one?
 			HttpStatus returnStatus = user != null ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST;
 			
-			return Mono.justOrEmpty( ResponseEntity.status( returnStatus ).body( user ) );
+			return Mono.justOrEmpty( 
+					ResponseEntity
+					.status( returnStatus )
+					.location( URI.create( "/users/" + user.getId() ) )
+					.body( user ) 
+					);
 			
 		});
 		
