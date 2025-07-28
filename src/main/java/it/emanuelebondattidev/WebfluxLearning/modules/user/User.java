@@ -3,15 +3,17 @@ package it.emanuelebondattidev.WebfluxLearning.modules.user;
 import java.io.Serializable;
 import java.util.UUID;
 
+import it.emanuelebondattidev.WebfluxLearning.utils.UUIDUtils;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-@Getter
+@Data
 public class User implements Serializable{
 
 	/**
@@ -22,5 +24,8 @@ public class User implements Serializable{
 	private String firstName;
 	private String lastName;
 	private String email;
-	private UUID id;
+	private String password;
+	
+	@NonNull
+	private UUID id = UUIDUtils.generate();
 }

@@ -31,7 +31,7 @@ public class CreateUserRequest implements Serializable{
 	private String email;
 	
 	@NotBlank( message = "Password cannot be empty" )
-	@Size( min = 9, max = 18, message = "Password must be in 9-18 characters range." )
+	@Size( min = 9, max = 16, message = "Password must be in 9-16 characters range." )
 	private String password;
 	
 	
