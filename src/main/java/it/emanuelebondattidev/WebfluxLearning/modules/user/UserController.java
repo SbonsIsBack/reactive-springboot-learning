@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
+@CrossOrigin
 @RequiredArgsConstructor
 public class UserController {
 	
@@ -49,14 +51,10 @@ public class UserController {
 		
 		return service.createUser( request )
 				.map( x -> {
-					
-					HttpStatus status = x != null ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST;
-					
 					return ResponseEntity
-							.status(status)
+							.status( x != null ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST )
 							.location( URI.create( "/users" + x.getId() ) )
-							.build();
-					
+							.body( x );
 				});
 		
 	}

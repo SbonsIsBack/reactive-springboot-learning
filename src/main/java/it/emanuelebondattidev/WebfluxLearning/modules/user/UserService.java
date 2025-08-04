@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import it.emanuelebondattidev.WebfluxLearning.modules.user.exceptions.MailAlreadyInUseException;
 import it.emanuelebondattidev.WebfluxLearning.modules.user.request.CreateUserRequest;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
@@ -18,7 +19,14 @@ public class UserService {
 	
 	
 	public Mono<User> createUser( Mono<CreateUserRequest> req ) {
-		return userRepo.createUser( req.map( this::toDTO ) );
+		return req.map(  this::toDTO )
+				 .flatMap(user ->
+		            userRepo.findByEmail(user.getEmail() )
+		                .flatMap( existingUser -> Mono.<User>error(new MailAlreadyInUseException( existingUser.getEmail() )) )
+		                .switchIfEmpty( userRepo.createUser( Mono.just( user ) ) )
+		        );
+				
+		
 	}
 	
 	public Flux<User> getUsers( int limit ){
