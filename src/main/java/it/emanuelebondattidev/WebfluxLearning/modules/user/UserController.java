@@ -61,10 +61,17 @@ public class UserController {
 	
 	
 	@GetMapping("/{userId}")
-	public Mono< User > getUser( @PathVariable UUID userId ) {
+	public Mono< ResponseEntity<User> > getUser( @PathVariable UUID userId ) {
 		System.out.println( "getUser" );
 		
-		return service.getUser( userId );
+		return service.getUser( userId )
+				.map( user -> ResponseEntity
+						.status( HttpStatus.OK )
+						.body( user )
+						)
+				.switchIfEmpty( 
+						Mono.just( ResponseEntity.status( HttpStatus.NOT_FOUND ).build() ) 
+						);
 	}
 	
 	
