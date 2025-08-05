@@ -52,10 +52,13 @@ public class UserController {
 		return service.createUser( request )
 				.map( x -> {
 					return ResponseEntity
-							.status( x != null ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST )
+							.status( HttpStatus.CREATED )
 							.location( URI.create( "/users" + x.getId() ) )
 							.body( x );
-				});
+				})
+				.switchIfEmpty( 
+						Mono.just( ResponseEntity.status( HttpStatus.BAD_REQUEST ).build() ) 
+						);
 		
 	}
 	

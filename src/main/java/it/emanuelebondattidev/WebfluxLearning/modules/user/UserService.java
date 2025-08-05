@@ -3,7 +3,10 @@ package it.emanuelebondattidev.WebfluxLearning.modules.user;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import it.emanuelebondattidev.WebfluxLearning.modules.user.exceptions.MailAlreadyInUseException;
 import it.emanuelebondattidev.WebfluxLearning.modules.user.request.CreateUserRequest;
@@ -19,12 +22,16 @@ public class UserService {
 	
 	
 	public Mono<User> createUser( Mono<CreateUserRequest> req ) {
-		return req.map(  this::toDTO )
-				 .flatMap(user ->
-		            userRepo.findByEmail(user.getEmail() )
-		                .flatMap( existingUser -> Mono.<User>error(new MailAlreadyInUseException( existingUser.getEmail() )) )
-		                .switchIfEmpty( userRepo.createUser( Mono.just( user ) ) )
-		        );
+//		return req.map(  this::toDTO )
+//				 .flatMap(user ->
+//		            userRepo.findByEmail(user.getEmail() )
+//		                .flatMap( existingUser -> Mono.<User>error(new MailAlreadyInUseException( existingUser.getEmail() ) ) )
+//		                .switchIfEmpty( userRepo.createUser( Mono.just( user ) ) )
+//		        );
+		return req.mapNotNull( this::toDTO )
+				.flatMap( user -> userRepo.createUser( Mono.just( user ) ) )
+				.onErrorMap( UserOnErrorHandler.mapExceptions() );
+				
 				
 		
 	}
